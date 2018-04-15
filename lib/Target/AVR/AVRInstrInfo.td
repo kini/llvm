@@ -1166,6 +1166,10 @@ let mayLoad = 1,
 hasSideEffects = 0,
 Constraints = "$ptrreg = $base_wb,@earlyclobber $reg" in
 {
+
+  // LD Rd, P+
+  // Loads into Rd the value at the location addressed by pointer P.
+  // Post increments P.
   def LDRdPtrPi : FSTLD<0,
                         0b01,
                         (outs GPR8:$reg, PTRREGS:$base_wb),
@@ -1175,6 +1179,9 @@ Constraints = "$ptrreg = $base_wb,@earlyclobber $reg" in
                   Requires<[HasSRAM]>;
 
   // LDW Rd+1:Rd, P+
+  // Loads into Rd+1:Rd the value at the location addressed by pointer P.
+  // Post increments P.
+  //
   // Expands to:
   // ld Rd,   P+
   // ld Rd+1, P+
@@ -1184,6 +1191,9 @@ Constraints = "$ptrreg = $base_wb,@earlyclobber $reg" in
                           []>,
                    Requires<[HasSRAM]>;
 
+  // LD Rd, -P
+  // Loads into Rd the value at the location addressed by pointer P.
+  // Pre decrements P.
   def LDRdPtrPd : FSTLD<0,
                         0b10,
                         (outs GPR8:$reg, PTRREGS:$base_wb),
